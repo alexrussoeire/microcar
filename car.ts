@@ -1,4 +1,4 @@
-﻿/**
+/**
   * Model Types of car
   * Single model for deskpi_microcar supported
   */
@@ -96,6 +96,9 @@ namespace car
     //% subcategory=Motors
     export function move(motor: CarMotor, direction: CarDirection): void
     {
+        let pos_pin_direction = 0
+        let neg_pin_direction = 0
+
         if (CarDirection.Forward == direction)
         {
             let pos_pin_direction = 0
