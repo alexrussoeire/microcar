@@ -101,13 +101,13 @@ namespace car
 
         if (CarDirection.Forward == direction)
         {
-            let pos_pin_direction = 0
-            let neg_pin_direction = 1
+            pos_pin_direction = 0
+            neg_pin_direction = 1
         }
         else
         {
-            let pos_pin_direction = 1
-            let neg_pin_direction = 0
+            pos_pin_direction = 1
+            neg_pin_direction = 0
         }
 
         if (motor == CarMotor.Left)
