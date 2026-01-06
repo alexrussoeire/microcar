@@ -1,0 +1,20 @@
+{
+    "name": "microcar",
+    "version": "0.0.1",
+    "description": "MakeCode package for micro cars",
+    "license": "",
+    "dependencies": {
+        "core": "*",
+        "OLED12864_I2C": "github:makecode-extensions/oled12864_i2c#v1.5.0",
+        "pxt-sonar": "github:microsoft/pxt-sonar#v0.0.6"
+    },
+    "files": [
+        "README.md",
+        "car.ts"
+    ],
+    "testFiles": [
+        "tests.ts"
+    ],
+    "public": true,
+    "yotta": {}
+}

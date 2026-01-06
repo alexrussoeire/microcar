@@ -1,0 +1,7 @@
+{
+  "car.select_model|block": "select car model%model",
+  "car.move|block": "move%motor|motor(s)%direction",
+  "car|block": "car",
+  "{id:category}car": "car",
+  "{id:subcategory}Motors": "Motors"
+}

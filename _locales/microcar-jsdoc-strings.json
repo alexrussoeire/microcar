@@ -1,0 +1,7 @@
+{
+  "car.select_model": "Force Model of car (Determines Pins used)",
+  "car.select_model|param|model": "Model of car; deskpi_microcar",
+  "car.move": "Move motor(s) forward or backward",
+  "car.move|param|motor": "motor to drive",
+  "car.move|param|direction": "select forwards or backward"
+}
