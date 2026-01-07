@@ -46,7 +46,7 @@ enum CarTurnDirection
  * Custom blocks
  */
 //% weight=50 color=#e7660b icon="\uf1b9"
-//% groups='["Motors", "car_model"]'
+//% groups='["Motors", "Advanced"]'
 namespace car
 {
 
@@ -78,8 +78,8 @@ namespace car
       * @param model Model of car; deskpi_microcar
       */
     //% blockId="car_model" block="select car model%model"
-    //% weight=100
-    //% subcategory=car_model
+    //% weight=0
+    //% subcategory=Advanced
     export function select_model(model: CarModel): void
     {
         if(model==CarModel.deskpi_microcar)
@@ -175,7 +175,7 @@ namespace car
      */
     //% blockId="car_distance_to_time_factor" block="init distance to time factor %factor"
     //% weight=100
-    //% subcategory=Motors
+    //% subcategory=Advanced
     export function distance_to_time_factor(factor: number) {
         cm_to_time_factor = factor
     }
@@ -186,7 +186,7 @@ namespace car
      */
     //% blockId="car_angle_to_time_factor" block="init angle to time factor %factor"
     //% weight=100
-    //% subcategory=Motors
+    //% subcategory=Advanced
     export function angle_to_time_factor(factor: number) {
         degree_to_time_factor = factor
     }
@@ -197,7 +197,7 @@ namespace car
       * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
       */
     //% blockId="Move_Duration" block="move%direction|for%duration|ms"
-    //% weight=50
+    //% weight=100
     //% subcategory=Motors
     export function move_duration(direction: CarDirection, milliseconds: number): void
     {
@@ -210,7 +210,7 @@ namespace car
       * @param distance distance in centimeters to drive forward for, then stop. eg: 10
       */
     //% blockId="Move_Distance" block="move%direction|for%distance|cm"
-    //% weight=50
+    //% weight=99
     //% subcategory=Motors
     export function move_distance(direction: CarDirection, distance: number): void
     {
@@ -223,7 +223,7 @@ namespace car
       * @param milliseconds duration in milliseconds to turn the car left or right for, then stop. eg: 500
       */
     //% blockId="Turn_Duration" block="turn%direction|for%duration|ms"
-    //% weight=60
+    //% weight=98
     //% subcategory=Motors
     export function turn_duration(direction: CarTurnDirection, milliseconds: number): void
     {
@@ -236,7 +236,7 @@ namespace car
       * @param angle angle in degrees to turn the car left or right for, then stop. eg: 90
       */
     //% blockId="Turn_Angle" block="turn%direction|for%angle|degrees"
-    //% weight=60
+    //% weight=97
     //% subcategory=Motors
     export function turn_angle(direction: CarTurnDirection, angle: number): void
     {
