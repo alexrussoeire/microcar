@@ -59,6 +59,9 @@ namespace car
     let motor_right_pos_pin: DigitalPin
     let motor_right_neg_pin: DigitalPin
 
+    // Default to deskpi_microcar
+    select_model(CarModel.deskpi_microcar)
+
 
 // Blocks for selecting car Model
 
