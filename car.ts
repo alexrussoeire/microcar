@@ -62,7 +62,7 @@ namespace car
     let motor_right_neg_pin: DigitalPin
 
     // Definition of the distance (in cm) to time (in ms) conversion factor
-    let cm_to_time_factor = 82 // Adjust this value based on calibration
+    let cm_to_time_factor = 85 // Adjust this value based on calibration
 
     // Definition of the angle (in degree) to time (in ms) conversion factor
     let degree_to_time_factor = 6 // Adjust this value based on calibration
@@ -235,7 +235,7 @@ namespace car
       * @param direction select left or right
       * @param angle angle in degrees to turn the car left or right for, then stop. eg: 90
       */
-    //% blockId="Turn" block="turn%direction|for%duration|ms"
+    //% blockId="Turn" block="turn%direction|for%angle|degrees"
     //% weight=60
     //% subcategory=Motors
     export function turn_angle(direction: CarTurnDirection, angle: number): void
