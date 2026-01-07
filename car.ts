@@ -78,7 +78,7 @@ namespace car
       * @param model Model of car; deskpi_microcar
       */
     //% blockId="car_model" block="select car model%model"
-    //% weight=0
+    //% weight=2
     //% subcategory=Advanced
     export function select_model(model: CarModel): void
     {
@@ -174,7 +174,7 @@ namespace car
      * @param factor is the conversion factor from cm to time in ms, eg: 82
      */
     //% blockId="car_distance_to_time_factor" block="init distance to time factor %factor"
-    //% weight=100
+    //% weight=1
     //% subcategory=Advanced
     export function distance_to_time_factor(factor: number) {
         cm_to_time_factor = factor
@@ -185,7 +185,7 @@ namespace car
      * @param factor is the conversion factor from angle to time in ms, eg: 6
      */
     //% blockId="car_angle_to_time_factor" block="init angle to time factor %factor"
-    //% weight=100
+    //% weight=0
     //% subcategory=Advanced
     export function angle_to_time_factor(factor: number) {
         degree_to_time_factor = factor
