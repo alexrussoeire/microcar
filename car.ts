@@ -222,7 +222,7 @@ namespace car
       * @param direction select left or right
       * @param milliseconds duration in milliseconds to turn the car left or right for, then stop. eg: 500
       */
-    //% blockId="Turn" block="turn%direction|for%duration|ms"
+    //% blockId="Turn_Duration" block="turn%direction|for%duration|ms"
     //% weight=60
     //% subcategory=Motors
     export function turn_duration(direction: CarTurnDirection, milliseconds: number): void
@@ -235,7 +235,7 @@ namespace car
       * @param direction select left or right
       * @param angle angle in degrees to turn the car left or right for, then stop. eg: 90
       */
-    //% blockId="Turn" block="turn%direction|for%angle|degrees"
+    //% blockId="Turn_Angle" block="turn%direction|for%angle|degrees"
     //% weight=60
     //% subcategory=Motors
     export function turn_angle(direction: CarTurnDirection, angle: number): void
