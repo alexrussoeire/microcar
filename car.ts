@@ -89,14 +89,24 @@ namespace car
 
 // Motor Blocks
 
+    // Private helper function to stop the car
+    function stop(): void
+    {
+        pins.digitalWritePin(motor_left_pos_pin, 0)
+        pins.digitalWritePin(motor_left_neg_pin, 0)
+        pins.digitalWritePin(motor_right_pos_pin, 0)
+        pins.digitalWritePin(motor_right_neg_pin, 0)
+    }
+
     /**
-      * Move motor(s) forward or backward
+      * Move motor(s) forward or backward for a selected duration
       * @param direction select forwards or backwards
+      * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
       */
-    //% blockId="Move" block="move%direction|"
+    //% blockId="Move" block="move%direction|for%duration|ms"
     //% weight=50
     //% subcategory=Motors
-    export function move(direction: CarDirection): void
+    export function move(direction: CarDirection, milliseconds: number): void
     {
         let pos_pin_direction = 0
         let neg_pin_direction = 0
@@ -116,16 +126,23 @@ namespace car
         pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
         pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
         pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
+
+        // Wait for the specified duration
+        basic.pause(milliseconds)
+
+        // Stop the car after moving
+        stop()
     }
 
     /**
-      * Turn the car left or right by driving motors in opposite directions
+      * Turn the car left or right for a selected duration
       * @param direction select left or right
+      * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
       */
-    //% blockId="Turn" block="turn%direction|"
+    //% blockId="Turn" block="turn%direction|for%duration|ms"
     //% weight=60
     //% subcategory=Motors
-    export function turn(direction: CarTurnDirection): void
+    export function turn(direction: CarTurnDirection, milliseconds: number): void
     {
         let pos_pin_direction = 0
         let neg_pin_direction = 1
@@ -150,19 +167,11 @@ namespace car
             pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
             pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
         }
-    }
 
-    /**
-      * Stop the car by stopping both motors
-      */
-    //% blockId="Stop" block="stop car"
-    //% weight=50
-    //% subcategory=Motors
-    export function stop(): void
-    {
-        pins.digitalWritePin(motor_left_pos_pin, 0)
-        pins.digitalWritePin(motor_left_neg_pin, 0)
-        pins.digitalWritePin(motor_right_pos_pin, 0)
-        pins.digitalWritePin(motor_right_neg_pin, 0)
+        // Wait for the specified duration
+        basic.pause(milliseconds)
+
+        // Stop the car after moving
+        stop()
     }
 }
