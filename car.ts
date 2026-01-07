@@ -52,12 +52,20 @@ namespace car
 
 /////
 
+    // Definition of the default car model
     let _model = CarModel.deskpi_microcar
 
+    // Definition of the IO pings used for the motors
     let motor_left_pos_pin: DigitalPin
     let motor_left_neg_pin: DigitalPin
     let motor_right_pos_pin: DigitalPin
     let motor_right_neg_pin: DigitalPin
+
+    // Definition of the distance (in cm) to time (in ms) conversion factor
+    let cm_to_time_factor = 82 // Adjust this value based on calibration
+
+    // Definition of the angle (in degree) to time (in ms) conversion factor
+    let degree_to_time_factor = 6 // Adjust this value based on calibration
 
     // Default to deskpi_microcar
     select_model(CarModel.deskpi_microcar)
@@ -98,15 +106,8 @@ namespace car
         pins.digitalWritePin(motor_right_neg_pin, 0)
     }
 
-    /**
-      * Move motor(s) forward or backward for a selected duration
-      * @param direction select forwards or backwards
-      * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
-      */
-    //% blockId="Move" block="move%direction|for%duration|ms"
-    //% weight=50
-    //% subcategory=Motors
-    export function move(direction: CarDirection, milliseconds: number): void
+    // Private helper function to move the car forward or backward for a selected duration
+    function move_for_ms(direction: CarDirection, milliseconds: number): void
     {
         let pos_pin_direction = 0
         let neg_pin_direction = 0
@@ -134,15 +135,8 @@ namespace car
         stop()
     }
 
-    /**
-      * Turn the car left or right for a selected duration
-      * @param direction select left or right
-      * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
-      */
-    //% blockId="Turn" block="turn%direction|for%duration|ms"
-    //% weight=60
-    //% subcategory=Motors
-    export function turn(direction: CarTurnDirection, milliseconds: number): void
+    // Private helper function to turn the car left or right for a selected duration
+    function turn_for_ms(direction: CarTurnDirection, milliseconds: number): void
     {
         let pos_pin_direction = 0
         let neg_pin_direction = 1
@@ -173,5 +167,79 @@ namespace car
 
         // Stop the car after moving
         stop()
+    }
+
+    /**
+     * Distance to time conversion factor
+     * @param factor is the conversion factor from cm to time in ms, eg: 82
+     */
+    //% blockId="car_distance_to_time_factor" block="init distance to time factor %factor"
+    //% weight=100
+    //% subcategory=Motors
+    export function distance_to_time_factor(factor: number) {
+        cm_to_time_factor = factor
+    }
+
+    /**
+     * Angle to time conversion factor
+     * @param factor is the conversion factor from angle to time in ms, eg: 6
+     */
+    //% blockId="car_angle_to_time_factor" block="init angle to time factor %factor"
+    //% weight=100
+    //% subcategory=Motors
+    export function angle_to_time_factor(factor: number) {
+        degree_to_time_factor = factor
+    }
+
+    /**
+      * Move motor(s) forward or backward for a selected duration
+      * @param direction select forwards or backwards
+      * @param milliseconds duration in milliseconds to drive forward for, then stop. eg: 1000
+      */
+    //% blockId="Move_Duration" block="move%direction|for%duration|ms"
+    //% weight=50
+    //% subcategory=Motors
+    export function move_duration(direction: CarDirection, milliseconds: number): void
+    {
+        move_for_ms(direction, milliseconds)
+    }
+
+    /**
+      * Move motor(s) forward or backward for a selected distance in cm
+      * @param direction select forwards or backwards
+      * @param distance distance in centimeters to drive forward for, then stop. eg: 10
+      */
+    //% blockId="Move_Distance" block="move%direction|for%distance|cm"
+    //% weight=50
+    //% subcategory=Motors
+    export function move_distance(direction: CarDirection, distance: number): void
+    {
+        move_for_ms(direction, distance * cm_to_time_factor)
+    }
+
+    /**
+      * Turn the car left or right for a selected duration
+      * @param direction select left or right
+      * @param milliseconds duration in milliseconds to turn the car left or right for, then stop. eg: 500
+      */
+    //% blockId="Turn" block="turn%direction|for%duration|ms"
+    //% weight=60
+    //% subcategory=Motors
+    export function turn_duration(direction: CarTurnDirection, milliseconds: number): void
+    {
+        turn_for_ms(direction, milliseconds)
+    }
+
+    /**
+      * Turn the car left or right for a selected angle in degrees
+      * @param direction select left or right
+      * @param angle angle in degrees to turn the car left or right for, then stop. eg: 90
+      */
+    //% blockId="Turn" block="turn%direction|for%duration|ms"
+    //% weight=60
+    //% subcategory=Motors
+    export function turn_angle(direction: CarTurnDirection, angle: number): void
+    {
+        turn_for_ms(direction, angle * degree_to_time_factor)
     }
 }
