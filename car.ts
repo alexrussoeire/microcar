@@ -46,7 +46,7 @@ enum CarTurnDirection
  * Custom blocks
  */
 //% weight=50 color=#e7660b icon="\uf1b9"
-//% groups='["car_model", "Motors"]'
+//% groups='["Motors", "car_model"]'
 namespace car
 {
 
@@ -90,14 +90,13 @@ namespace car
 // Motor Blocks
 
     /**
-      * Move individual motors forward or backward
-      * @param motor motor to drive
+      * Move motor(s) forward or backward
       * @param direction select forwards or backwards
       */
-    //% blockId="BBMove" block="move%motor|motor(s)%direction|\\%"
+    //% blockId="Move" block="move%direction|"
     //% weight=50
     //% subcategory=Motors
-    export function move(motor: CarMotor, direction: CarDirection): void
+    export function move(direction: CarDirection): void
     {
         let pos_pin_direction = 0
         let neg_pin_direction = 0
@@ -113,24 +112,57 @@ namespace car
             neg_pin_direction = 0
         }
 
-        if (motor == CarMotor.Left)
+        pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
+        pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
+        pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
+        pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
+    }
+
+    /**
+      * Turn the car left or right by driving motors in opposite directions
+      * @param direction select left or right
+      */
+    //% blockId="Turn" block="turn%direction|"
+    //% weight=60
+    //% subcategory=Motors
+    export function turn(direction: CarTurnDirection): void
+    {
+        let pos_pin_direction = 0
+        let neg_pin_direction = 1
+
+        if (CarTurnDirection.Left == direction)
         {
+            // Rotate right wheel forward
+            pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
+            pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
+
+            // Rotate left wheel backward
+            pins.digitalWritePin(motor_left_pos_pin, neg_pin_direction)
+            pins.digitalWritePin(motor_left_neg_pin, pos_pin_direction)
+        }
+        else
+        {
+            // Rotate right wheel backward
+            pins.digitalWritePin(motor_right_pos_pin, neg_pin_direction)
+            pins.digitalWritePin(motor_right_neg_pin, pos_pin_direction)
+
+            // Rotate left wheel forward
             pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
             pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
         }
+    }
 
-        if (motor == CarMotor.Right)
-        {
-            pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
-            pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
-        }
-
-        if (motor == CarMotor.Both)
-        {
-            pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
-            pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
-            pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
-            pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
-        }
+    /**
+      * Stop the car by stopping both motors
+      */
+    //% blockId="Stop" block="stop car"
+    //% weight=50
+    //% subcategory=Motors
+    export function stop(): void
+    {
+        pins.digitalWritePin(motor_left_pos_pin, 0)
+        pins.digitalWritePin(motor_left_neg_pin, 0)
+        pins.digitalWritePin(motor_right_pos_pin, 0)
+        pins.digitalWritePin(motor_right_neg_pin, 0)
     }
 }
