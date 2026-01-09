@@ -46,7 +46,7 @@ enum CarTurnDirection
  * Custom blocks
  */
 //% weight=50 color=#e7660b icon="\uf1b9"
-//% groups='["Motors", "Advanced"]'
+//% groups='["Motors", "Sensors", "Advanced"]'
 namespace car
 {
 
@@ -56,10 +56,14 @@ namespace car
     let _model = CarModel.deskpi_microcar
 
     // Definition of the IO pings used for the motors
-    let motor_left_pos_pin: DigitalPin
-    let motor_left_neg_pin: DigitalPin
-    let motor_right_pos_pin: DigitalPin
-    let motor_right_neg_pin: DigitalPin
+    let pin_motor_left_pos: DigitalPin
+    let pin_motor_left_neg: DigitalPin
+    let pin_motor_right_pos: DigitalPin
+    let pin_motor_right_neg: DigitalPin
+
+    // Definition of the ultrasonic sensor pins
+    let pin_ultrasonic_trigger: DigitalPin
+    let pin_ultrasonic_echo: DigitalPin
 
     // Definition of the distance (in cm) to time (in ms) conversion factor
     let cm_to_time_factor = 85 // Adjust this value based on calibration
@@ -87,10 +91,15 @@ namespace car
             _model = model;
             if (_model == CarModel.deskpi_microcar)
             {
-                motor_left_pos_pin = DigitalPin.P13
-                motor_left_neg_pin = DigitalPin.P14
-                motor_right_pos_pin = DigitalPin.P15
-                motor_right_neg_pin = DigitalPin.P16
+                // Define motor pins for deskpi_microcar
+                pin_motor_left_pos = DigitalPin.P13
+                pin_motor_left_neg = DigitalPin.P14
+                pin_motor_right_pos = DigitalPin.P15
+                pin_motor_right_neg = DigitalPin.P16
+
+                // Define ultrasonic sensor pins for deskpi_microcar
+                pin_ultrasonic_trigger = DigitalPin.P12
+                pin_ultrasonic_echo = DigitalPin.P9
             }
         }
     }
@@ -100,33 +109,33 @@ namespace car
     // Private helper function to stop the car
     function stop(): void
     {
-        pins.digitalWritePin(motor_left_pos_pin, 0)
-        pins.digitalWritePin(motor_left_neg_pin, 0)
-        pins.digitalWritePin(motor_right_pos_pin, 0)
-        pins.digitalWritePin(motor_right_neg_pin, 0)
+        pins.digitalWritePin(pin_motor_left_pos, 0)
+        pins.digitalWritePin(pin_motor_left_neg, 0)
+        pins.digitalWritePin(pin_motor_right_pos, 0)
+        pins.digitalWritePin(pin_motor_right_neg, 0)
     }
 
     // Private helper function to move the car forward or backward for a selected duration
     function move_for_ms(direction: CarDirection, milliseconds: number): void
     {
-        let pos_pin_direction = 0
-        let neg_pin_direction = 0
+        let pin_pos_direction = 0
+        let pin_neg_direction = 0
 
         if (CarDirection.Forward == direction)
         {
-            pos_pin_direction = 0
-            neg_pin_direction = 1
+            pin_pos_direction = 0
+            pin_neg_direction = 1
         }
         else
         {
-            pos_pin_direction = 1
-            neg_pin_direction = 0
+            pin_pos_direction = 1
+            pin_neg_direction = 0
         }
 
-        pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
-        pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
-        pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
-        pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
+        pins.digitalWritePin(pin_motor_right_pos, pin_pos_direction)
+        pins.digitalWritePin(pin_motor_right_neg, pin_neg_direction)
+        pins.digitalWritePin(pin_motor_left_pos, pin_pos_direction)
+        pins.digitalWritePin(pin_motor_left_neg, pin_neg_direction)
 
         // Wait for the specified duration
         basic.pause(milliseconds)
@@ -138,28 +147,28 @@ namespace car
     // Private helper function to turn the car left or right for a selected duration
     function turn_for_ms(direction: CarTurnDirection, milliseconds: number): void
     {
-        let pos_pin_direction = 0
-        let neg_pin_direction = 1
+        let pin_pos_direction = 0
+        let pin_neg_direction = 1
 
         if (CarTurnDirection.Left == direction)
         {
             // Rotate right wheel forward
-            pins.digitalWritePin(motor_right_pos_pin, pos_pin_direction)
-            pins.digitalWritePin(motor_right_neg_pin, neg_pin_direction)
+            pins.digitalWritePin(pin_motor_right_pos, pin_pos_direction)
+            pins.digitalWritePin(pin_motor_right_neg, pin_neg_direction)
 
             // Rotate left wheel backward
-            pins.digitalWritePin(motor_left_pos_pin, neg_pin_direction)
-            pins.digitalWritePin(motor_left_neg_pin, pos_pin_direction)
+            pins.digitalWritePin(pin_motor_left_pos, pin_neg_direction)
+            pins.digitalWritePin(pin_motor_left_neg, pin_pos_direction)
         }
         else
         {
             // Rotate right wheel backward
-            pins.digitalWritePin(motor_right_pos_pin, neg_pin_direction)
-            pins.digitalWritePin(motor_right_neg_pin, pos_pin_direction)
+            pins.digitalWritePin(pin_motor_right_pos, pin_neg_direction)
+            pins.digitalWritePin(pin_motor_right_neg, pin_pos_direction)
 
             // Rotate left wheel forward
-            pins.digitalWritePin(motor_left_pos_pin, pos_pin_direction)
-            pins.digitalWritePin(motor_left_neg_pin, neg_pin_direction)
+            pins.digitalWritePin(pin_motor_left_pos, pin_pos_direction)
+            pins.digitalWritePin(pin_motor_left_neg, pin_neg_direction)
         }
 
         // Wait for the specified duration
@@ -241,5 +250,20 @@ namespace car
     export function turn_angle(direction: CarTurnDirection, angle: number): void
     {
         turn_for_ms(direction, angle * degree_to_time_factor)
+    }
+
+// Sensor Blocks
+
+    /**
+      * Get distance from ultrasonic sensor in cm
+      * @returns distance in cm
+      */
+    //% blockId="Get_Distance_CM" block="get distance in cm"
+    //% weight=89
+    //% subcategory=Sensors
+    export function get_distance_cm(): number
+    {
+        let distance_cm = sonar.ping(pin_ultrasonic_trigger, pin_ultrasonic_echo, PingUnit.CENTIMETERS)
+        return distance_cm
     }
 }
