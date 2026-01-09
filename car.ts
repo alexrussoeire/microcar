@@ -263,7 +263,7 @@ namespace car
     //% subcategory=Sensors
     export function get_distance_cm(): number
     {
-        let distance_cm = sonar.ping(pin_ultrasonic_trigger, pin_ultrasonic_echo, PingUnit.CENTIMETERS)
+        let distance_cm = sonar.ping(pin_ultrasonic_trigger, pin_ultrasonic_echo, PingUnit.Centimeters)
         return distance_cm
     }
 }
