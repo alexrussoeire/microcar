@@ -288,7 +288,7 @@ namespace car
       * @param line_sensor select left or right
       * @returns true if black line detected, false otherwise
       */
-    //% blockId="Get_Line_Detection" block="get line detection"
+    //% blockId="Get_Line_Detection" block="get line detection%line_sensor"
     //% weight=88
     //% subcategory=Sensors
     export function get_line_detection(line_sensor: CarLineSensor): boolean
