@@ -43,6 +43,17 @@ enum CarTurnDirection
 }
 
 /**
+  * Enumeration of the line sensors.
+  */
+enum CarLineSensor
+{
+    //% block="left"
+    Left,
+    //% block="right"
+    Right
+}
+
+/**
  * Custom blocks
  */
 //% weight=50 color=#e7660b icon="\uf1b9"
@@ -65,11 +76,18 @@ namespace car
     let pin_ultrasonic_trigger: DigitalPin
     let pin_ultrasonic_echo: DigitalPin
 
+    // Definition of the line sensor pins
+    let pin_line_sensor_left: AnalogPin = AnalogPin.P1
+    let pin_line_sensor_right: AnalogPin = AnalogPin.P2
+
     // Definition of the distance (in cm) to time (in ms) conversion factor
     let cm_to_time_factor = 85 // Adjust this value based on calibration
 
     // Definition of the angle (in degree) to time (in ms) conversion factor
     let degree_to_time_factor = 6 // Adjust this value based on calibration
+
+    // Definition of the grey scale analog value to detect black line
+    let black_tape_threshold = 300 // Adjust this value based on calibration
 
     // Default to deskpi_microcar
     select_model(CarModel.deskpi_microcar)
@@ -179,6 +197,17 @@ namespace car
     }
 
     /**
+     * Black tape threshold value
+     * @param black_tape is the threshold value for detecting black tape, eg: 300
+     */
+    //% blockId="car_line_black_tape_threshold" block="init line black tape threshold %black_tape"
+    //% weight=2
+    //% subcategory=Advanced
+    export function line_black_tape_threshold(black_tape: number) {
+        black_tape_threshold = black_tape
+    }
+
+    /**
      * Distance to time conversion factor
      * @param factor is the conversion factor from cm to time in ms, eg: 82
      */
@@ -253,6 +282,24 @@ namespace car
     }
 
 // Sensor Blocks
+
+    /**
+      * Line sensor black line detection
+      * @returns true if black line detected, false otherwise
+      */
+    //% blockId="Get_Line_Detection" block="get line detection"
+    //% weight=88
+    //% subcategory=Sensors
+    export function get_line_detection(line_sensor: CarLineSensor): boolean
+    {
+        if (line_sensor == CarLineSensor.Left) {
+            let left_line = pins.analogReadPin(pin_line_sensor_left)
+            return left_line > black_tape_threshold
+        } else if (line_sensor == CarLineSensor.Right) {
+            let right_line = pins.analogReadPin(pin_line_sensor_right)
+            return right_line > black_tape_threshold
+        }
+    }
 
     /**
       * Get distance from ultrasonic sensor in cm
