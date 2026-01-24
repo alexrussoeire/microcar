@@ -293,13 +293,17 @@ namespace car
     //% subcategory=Sensors
     export function get_line_detection(line_sensor: CarLineSensor): boolean
     {
+        let detection = false
+
         if (line_sensor == CarLineSensor.Left) {
             let left_line = pins.analogReadPin(pin_line_sensor_left)
-            return left_line > black_tape_threshold
-        } else if (line_sensor == CarLineSensor.Right) {
+            detection = left_line > black_tape_threshold
+        } else {
             let right_line = pins.analogReadPin(pin_line_sensor_right)
-            return right_line > black_tape_threshold
+            detection = right_line > black_tape_threshold
         }
+
+        return detection
     }
 
     /**
