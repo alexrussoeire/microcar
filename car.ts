@@ -81,10 +81,10 @@ namespace car
     let pin_line_sensor_right: AnalogPin = AnalogPin.P2
 
     // Definition of the distance (in cm) to time (in ms) conversion factor
-    let cm_to_time_factor = 85 // Adjust this value based on calibration
+    let cm_to_ms = 85 // Adjust this value based on calibration
 
     // Definition of the angle (in degree) to time (in ms) conversion factor
-    let degree_to_time_factor = 6 // Adjust this value based on calibration
+    let degree_to_ms = 6 // Adjust this value based on calibration
 
     // Definition of the grey scale analog value to detect a line
     // Default value for black tape on white surface
@@ -198,36 +198,36 @@ namespace car
     }
 
     /**
-     * Black tape threshold value
-     * @param black_tape is the threshold value for detecting black tape, eg: 300
+     * Set the line detection threshold value
+     * @param value for detecting line, eg: 300 for black tape on white surface
      */
-    //% blockId="car_line_line_detection_threshold" block="init line black tape threshold %black_tape"
+    //% blockId="car_line_line_detection_threshold" block="Set line threshold detection %value"
     //% weight=2
     //% subcategory=Advanced
-    export function line_line_detection_threshold(black_tape: number) {
-        line_detection_threshold = black_tape
+    export function set_line_detection_threshold(value: number) {
+        line_detection_threshold = value
     }
 
     /**
-     * Distance to time conversion factor
-     * @param factor is the conversion factor from cm to time in ms, eg: 82
+     * Set the car move in cm to ms value
+     * @param value in ms corresponding to one cm car travel, eg: 82ms for one cm travelled
      */
-    //% blockId="car_distance_to_time_factor" block="init distance to time factor %factor"
+    //% blockId="car_move_cm_to_ms" block="Set car move in cm to ms %value"
     //% weight=1
     //% subcategory=Advanced
-    export function distance_to_time_factor(factor: number) {
-        cm_to_time_factor = factor
+    export function set_car_move_in_cm_to_ms(value: number) {
+        cm_to_ms = value
     }
 
     /**
-     * Angle to time conversion factor
-     * @param factor is the conversion factor from angle to time in ms, eg: 6
+     * Set the car rotation in degree to ms value
+     * @param value in ms corresponding to one degree rotation, eg: 6ms for one degree turned
      */
-    //% blockId="car_angle_to_time_factor" block="init angle to time factor %factor"
+    //% blockId="car_rotation_degree_to_ms" block="Set car rotation in degree to ms %value"
     //% weight=0
     //% subcategory=Advanced
-    export function angle_to_time_factor(factor: number) {
-        degree_to_time_factor = factor
+    export function set_car_rotation_in_degree_to_ms(value: number) {
+        degree_to_ms = value
     }
 
     /**
@@ -253,7 +253,7 @@ namespace car
     //% subcategory=Motors
     export function move_distance(direction: CarDirection, distance: number): void
     {
-        move_for_ms(direction, distance * cm_to_time_factor)
+        move_for_ms(direction, distance * cm_to_ms)
     }
 
     /**
@@ -279,7 +279,7 @@ namespace car
     //% subcategory=Motors
     export function turn_angle(direction: CarTurnDirection, angle: number): void
     {
-        turn_for_ms(direction, angle * degree_to_time_factor)
+        turn_for_ms(direction, angle * degree_to_ms)
     }
 
 // Sensor Blocks
