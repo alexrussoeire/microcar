@@ -86,8 +86,9 @@ namespace car
     // Definition of the angle (in degree) to time (in ms) conversion factor
     let degree_to_time_factor = 6 // Adjust this value based on calibration
 
-    // Definition of the grey scale analog value to detect black line
-    let black_tape_threshold = 300 // Adjust this value based on calibration
+    // Definition of the grey scale analog value to detect a line
+    // Default value for black tape on white surface
+    let line_detection_threshold = 300 // Adjust this value based on calibration
 
     // Default to deskpi_microcar
     select_model(CarModel.deskpi_microcar)
@@ -200,11 +201,11 @@ namespace car
      * Black tape threshold value
      * @param black_tape is the threshold value for detecting black tape, eg: 300
      */
-    //% blockId="car_line_black_tape_threshold" block="init line black tape threshold %black_tape"
+    //% blockId="car_line_line_detection_threshold" block="init line black tape threshold %black_tape"
     //% weight=2
     //% subcategory=Advanced
-    export function line_black_tape_threshold(black_tape: number) {
-        black_tape_threshold = black_tape
+    export function line_line_detection_threshold(black_tape: number) {
+        line_detection_threshold = black_tape
     }
 
     /**
@@ -284,26 +285,26 @@ namespace car
 // Sensor Blocks
 
     /**
-      * Line sensor black line detection
+      * Line detection from line sensor
       * @param line_sensor select left or right
-      * @returns true if black line detected, false otherwise
+      * @returns true if line detected, false otherwise
       */
-    //% blockId="Get_Line_Detection" block="get line detection%line_sensor"
+    //% blockId="Line_Detected" block="line detected%line_sensor"
     //% weight=88
     //% subcategory=Sensors
-    export function get_line_detection(line_sensor: CarLineSensor): boolean
+    export function line_detected(line_sensor: CarLineSensor): boolean
     {
-        let detection = false
+        let line_detected = false
 
         if (line_sensor == CarLineSensor.Left) {
             let left_line = pins.analogReadPin(pin_line_sensor_left)
-            detection = left_line > black_tape_threshold
+            line_detected = left_line > line_detection_threshold
         } else {
             let right_line = pins.analogReadPin(pin_line_sensor_right)
-            detection = right_line > black_tape_threshold
+            line_detected = right_line > line_detection_threshold
         }
 
-        return detection
+        return line_detected
     }
 
     /**
