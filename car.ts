@@ -285,6 +285,7 @@ namespace car
 
     /**
       * Line sensor black line detection
+      * @param line_sensor select left or right
       * @returns true if black line detected, false otherwise
       */
     //% blockId="Get_Line_Detection" block="get line detection"
